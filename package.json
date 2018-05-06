@@ -1,0 +1,24 @@
+{
+  "name": "alexa_skill_tester",
+  "version": "1.0.0",
+  "description": "alexa_skill_tester",
+  "main": "index.js",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start":"node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BharanitharanK/alexa_skill_tester.git"
+  },
+  "author": "bharanitharan k",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BharanitharanK/alexa_skill_tester/issues"
+  },
+  "homepage": "https://github.com/BharanitharanK/alexa_skill_tester#readme"
+}
