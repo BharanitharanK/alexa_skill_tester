@@ -4,7 +4,7 @@ var ejs=require('ejs');
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static('web'));
-app.listen(8080);
+app.listen(8085);
 app.get('/',function(req,res){
    res.render('login');
     });

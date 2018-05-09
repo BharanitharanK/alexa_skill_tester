@@ -15,25 +15,40 @@
                         <img src="/image/alexalogo.jpg" class="float-left" alt="Paris" width="80" height="50"></img>Alexa skill tester</h1>
                 </div>
             </header>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <form>
-                <div class="form-group">
-                    <label for="ClientId">ClientId:</label>
-                    <input type="text" class="form-control" id="ClientId" placeholder="Enter ClientId" name="ClientId">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <form>
+                        <div class="form-group">
+                            <label for="ClientId">ClientId:</label>
+                            <input type="text" class="form-control" id="ClientId" placeholder="Enter ClientId" name="ClientId">
+                        </div>
+                        <button href id="LoginWithAmazon" class="btn">
+                            <img border="0" alt="Login with Amazon" src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+                                width="156" height="32" />
+                        </button>
+                    </form>
                 </div>
-                <button href id="LoginWithAmazon" class="btn">
-                    <img border="0" alt="Login with Amazon" src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
-                        width="156" height="32" />
-                </button>
-            </form>
             </div>
+            <div class="row">
+                <h4 id="h">
+                    <p>token expires in : </p>
+                </h4>
+                <h4 id="texp">
+                    <p id="time"></p>
+                </h4>
+                <h4 id="head">
+                    <p>access token : </p>
+                </h4>
+                <p id="token"></p>
+            </div>
+
             <div id="amazon-root"></div>
         </div>
         <script type="text/javascript">
-        var clientid="";
-            $("#LoginWithAmazon").click(function(){
-            clientid=$("#ClientId").val();
-            amazon.Login.setClientId(clientid);
+            var clientid = "";
+            $("#LoginWithAmazon").click(function () {
+                clientid = $("#ClientId").val();
+                amazon.Login.setClientId(clientid);
             });
             (function (d) {
                 var a = d.createElement('script'); a.type = 'text/javascript';
@@ -47,19 +62,34 @@
             };
             window.doLogin = function () {
                 options = {};
-                options.scope = 'profile';
+                options.scope = 'alexa::ask:skills:test';
                 amazon.Login.authorize(options, function (response) {
                     if (response.error) {
                         alert('oauth error ' + response.error);
                         return;
                     }
-                    alert('access_token : ' + response.access_token);
                     console.log(response.access_token);
-                    amazon.Login.retrieveProfile(response.access_token, function (profileResponse) {
-                        alert('Hello, ' + profileResponse.profile.Name);
-                        alert('Your e-mail address is ' + profileResponse.profile.PrimaryEmail);
-                        alert('Your unique ID is ' + profileResponse.profile.CustomerId);
-                    });
+                    console.log(response);
+                    $('#h').show();
+                    $('#head').show();
+                    $('#token').show();
+                    var rt = response.expires_in;
+                    var t = setInterval(time, 1000);
+                    function time() {
+                        rt = rt - 1;
+                        if (rt > 0) {
+                            $('#texp').text(rt + " seconds");
+                        }
+                        else {
+                            clearInterval(t);
+                            alert('token expired login again to get a new token');
+                            $('#texp').text('token expired login again to get a new token');
+                            $('#h').hide();
+                            $('#head').hide();
+                            $('#token').hide();
+                        }
+                    }
+                    $('#token').text(response.access_token);
                 });
             };
 
